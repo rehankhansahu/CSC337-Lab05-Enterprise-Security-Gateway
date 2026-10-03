@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="CSC337 Enterprise Security Gateway"
+  >
+
+  <title>Enterprise Security Gateway</title>
+
+  <link
+    rel="stylesheet"
+    href="/style.css"
+  >
+</head>
+
+<body>
+
+  <header class="navbar">
+    <div class="container nav-content">
+
+      <div class="brand">
+        <div class="brand-icon">S</div>
+
+        <div>
+          <h1>Security Gateway</h1>
+          <p>Enterprise Access Portal</p>
+        </div>
+      </div>
+
+      <div
+        id="navUser"
+        class="nav-user hidden"
+      >
+        <span
+          id="navRole"
+          class="role-badge"
+        >
+          Employee
+        </span>
+
+        <button
+          id="logoutBtn"
+          class="btn btn-outline btn-small"
+          type="button"
+        >
+          Logout
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+
+  <main class="container main-content">
+
+    <!-- ========================================
+         AUTH SECTION
+    ========================================= -->
+
+    <section
+      id="authSection"
+      class="auth-layout"
+    >
+
+      <div class="hero">
+        <span class="eyebrow">
+          CSC337 · LAB 05
+        </span>
+
+        <h2>
+          Enterprise Application
+          Security Gateway
+        </h2>
+
+        <p class="hero-text">
+          Secure authentication, OAuth 2.0,
+          token rotation and role-based access
+          control in one application.
+        </p>
+
+        <div class="feature-grid">
+
+          <div class="feature">
+            <span class="feature-icon">✓</span>
+            <div>
+              <strong>Secure Authentication</strong>
+              <p>Bcrypt password hashing</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <span class="feature-icon">✓</span>
+            <div>
+              <strong>OAuth 2.0</strong>
+              <p>GitHub social authentication</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <span class="feature-icon">✓</span>
+            <div>
+              <strong>JWT Rotation</strong>
+              <p>Short-lived access tokens</p>
+            </div>
+          </div>
+
+          <div class="feature">
+            <span class="feature-icon">✓</span>
+            <div>
+              <strong>RBAC</strong>
+              <p>Enterprise role protection</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="auth-card">
+
+        <div class="tabs">
+          <button
+            id="loginTab"
+            class="tab active"
+            type="button"
+          >
+            Sign In
+          </button>
+
+          <button
+            id="registerTab"
+            class="tab"
+            type="button"
+          >
+            Register
+          </button>
+        </div>
+
+
+        <!-- LOGIN FORM -->
+
+        <form id="loginForm">
+
+          <div class="form-heading">
+            <h3>Welcome back</h3>
+            <p>Sign in to your secure account.</p>
+          </div>
+
+          <div class="field">
+            <label for="loginEmail">
+              Email address
+            </label>
+
+            <input
+              id="loginEmail"
+              type="email"
+              autocomplete="email"
+              placeholder="employee@example.com"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="loginPassword">
+              Password
+            </label>
+
+            <input
+              id="loginPassword"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Enter your password"
+              required
+            >
+          </div>
+
+          <button
+            id="loginBtn"
+            class="btn btn-primary btn-full"
+            type="submit"
+          >
+            Sign In
+          </button>
+
+          <div class="divider">
+            <span>or continue with</span>
+          </div>
+
+          <a
+            href="/api/v1/auth/github"
+            class="btn btn-github btn-full"
+          >
+            <span class="github-mark">GH</span>
+            Continue with GitHub
+          </a>
+
+        </form>
+
+
+        <!-- REGISTER FORM -->
+
+        <form
+          id="registerForm"
+          class="hidden"
+        >
+
+          <div class="form-heading">
+            <h3>Create an account</h3>
+            <p>
+              New accounts are securely assigned
+              the Employee role.
+            </p>
+          </div>
+
+          <div class="field">
+            <label for="registerName">
+              Full name
+            </label>
+
+            <input
+              id="registerName"
+              type="text"
+              autocomplete="name"
+              placeholder="Muhammad Rehan"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="registerEmail">
+              Email address
+            </label>
+
+            <input
+              id="registerEmail"
+              type="email"
+              autocomplete="email"
+              placeholder="you@example.com"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="registerPassword">
+              Password
+            </label>
+
+            <input
+              id="registerPassword"
+              type="password"
+              autocomplete="new-password"
+              minlength="6"
+              placeholder="Minimum 6 characters"
+              required
+            >
+          </div>
+
+          <button
+            id="registerBtn"
+            class="btn btn-primary btn-full"
+            type="submit"
+          >
+            Create Account
+          </button>
+
+        </form>
+
+        <div
+          id="authMessage"
+          class="message hidden"
+          role="status"
+        ></div>
+
+      </div>
+    </section>
+
+
+    <!-- ========================================
+         DASHBOARD
+    ========================================= -->
+
+    <section
+      id="dashboardSection"
+      class="dashboard hidden"
+    >
+
+      <div class="dashboard-header">
+        <div>
+          <span class="eyebrow">
+            SECURE DASHBOARD
+          </span>
+
+          <h2 id="welcomeText">
+            Welcome
+          </h2>
+
+          <p>
+            Your identity and permissions are
+            protected by JWT authentication and RBAC.
+          </p>
+        </div>
+
+        <button
+          id="refreshBtn"
+          class="btn btn-secondary"
+          type="button"
+        >
+          Refresh Session
+        </button>
+      </div>
+
+
+      <!-- USER INFORMATION -->
+
+      <div class="dashboard-grid">
+
+        <article class="panel profile-panel">
+          <div class="panel-heading">
+            <div>
+              <span class="panel-label">
+                ACCOUNT
+              </span>
+              <h3>Your Profile</h3>
+            </div>
+
+            <div
+              id="avatar"
+              class="avatar"
+            >
+              U
+            </div>
+          </div>
+
+          <div class="profile-data">
+
+            <div class="data-row">
+              <span>Name</span>
+              <strong id="profileName">-</strong>
+            </div>
+
+            <div class="data-row">
+              <span>Email</span>
+              <strong id="profileEmail">-</strong>
+            </div>
+
+            <div class="data-row">
+              <span>Role</span>
+              <strong id="profileRole">-</strong>
+            </div>
+
+            <div class="data-row">
+              <span>Provider</span>
+              <strong id="profileProvider">-</strong>
+            </div>
+
+          </div>
+
+          <button
+            id="profileBtn"
+            class="btn btn-secondary btn-full"
+            type="button"
+          >
+            Reload Protected Profile
+          </button>
+        </article>
+
+
+        <!-- SECURITY STATUS -->
+
+        <article class="panel">
+          <div class="panel-heading">
+            <div>
+              <span class="panel-label">
+                SECURITY
+              </span>
+              <h3>Protection Status</h3>
+            </div>
+
+            <span class="status-dot"></span>
+          </div>
+
+          <div class="security-list">
+
+            <div class="security-item">
+              <span>JWT Access Token</span>
+              <strong>15 min</strong>
+            </div>
+
+            <div class="security-item">
+              <span>Refresh Token</span>
+              <strong>httpOnly</strong>
+            </div>
+
+            <div class="security-item">
+              <span>Token Rotation</span>
+              <strong class="green">Active</strong>
+            </div>
+
+            <div class="security-item">
+              <span>Rate Limiting</span>
+              <strong class="green">Active</strong>
+            </div>
+
+            <div class="security-item">
+              <span>OWASP Headers</span>
+              <strong class="green">Active</strong>
+            </div>
+
+          </div>
+        </article>
+
+      </div>
+
+
+      <!-- ROLE BASED ACTIONS -->
+
+      <article class="panel actions-panel">
+
+        <div class="panel-heading">
+          <div>
+            <span class="panel-label">
+              RBAC
+            </span>
+            <h3>Role-Based Actions</h3>
+          </div>
+
+          <span
+            id="dashboardRole"
+            class="role-badge"
+          >
+            Employee
+          </span>
+        </div>
+
+        <p class="panel-description">
+          Available actions are determined by your
+          authenticated enterprise role.
+        </p>
+
+        <div class="action-grid">
+
+          <button
+            id="approvePayrollBtn"
+            class="action-card hidden"
+            type="button"
+          >
+            <span class="action-icon">$</span>
+
+            <span>
+              <strong>Approve Payroll</strong>
+              <small>
+                Manager & SuperAdmin
+              </small>
+            </span>
+          </button>
+
+
+          <div
+            id="deleteUserArea"
+            class="delete-area hidden"
+          >
+
+            <div>
+              <strong>Delete User</strong>
+              <small>
+                SuperAdmin only · Enter MongoDB user ID
+              </small>
+            </div>
+
+            <div class="delete-controls">
+              <input
+                id="deleteUserId"
+                type="text"
+                placeholder="User ID"
+              >
+
+              <button
+                id="deleteUserBtn"
+                class="btn btn-danger"
+                type="button"
+              >
+                Delete
+              </button>
+            </div>
+
+          </div>
+
+          <div
+            id="employeeNotice"
+            class="employee-notice"
+          >
+            <span class="lock-icon">●</span>
+
+            <div>
+              <strong>Employee Access</strong>
+              <p>
+                Payroll approval and user management
+                require elevated permissions.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </article>
+
+
+      <div
+        id="dashboardMessage"
+        class="message hidden"
+        role="status"
+      ></div>
+
+    </section>
+
+  </main>
+
+
+  <footer>
+    <div class="container footer-content">
+      <p>
+        CSC337 · Advanced Web Technologies · Lab 05
+      </p>
+
+      <p>
+        Enterprise Application Security
+      </p>
+    </div>
+  </footer>
+
+
+  <script
+    src="/app.js"
+    defer
+  ></script>
+
+</body>
+</html>
